@@ -10,7 +10,7 @@ class PhoneBook {
     ~PhoneBook(void);
 
     int getContactsNum(void) const;
-    Contact getContact(int index) const;
+    bool getContact(int index, Contact *ct);
 
     void addContact(Contact ct);
 
