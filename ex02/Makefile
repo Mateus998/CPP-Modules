@@ -1,9 +1,7 @@
-NAME = ex01
+NAME = ex02
 
-SRC = src/addContact.cpp src/Contact.cpp src/PhoneBook.cpp \
-src/searchContact.cpp src/searchContactUtils.cpp main.cpp
+SRC = Account.cpp tests.cpp
 
-INC_DIR = includes
 OBJ_DIR = obj
 
 OBJ = $(addprefix $(OBJ_DIR)/, $(SRC:.cpp=.o))
@@ -14,7 +12,7 @@ CFLAGS = -Wall -Wextra -Werror -std=c++98
 all: $(NAME) 
 
 $(NAME): $(OBJ)
-	$(CC) $(CFLAGS) -I$(INC_DIR) $(OBJ) -o $(NAME)
+	$(CC) $(CFLAGS) $(OBJ) -o $(NAME)
 
 $(OBJ_DIR)/%.o: %.cpp
 	mkdir -p $(dir $@)

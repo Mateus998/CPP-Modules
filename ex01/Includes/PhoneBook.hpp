@@ -10,9 +10,11 @@ class PhoneBook {
     ~PhoneBook(void);
 
     int getContactsNum(void) const;
-    bool getContact(int index, Contact *ct);
+    int getContact(int index, Contact *ct);
 
     void addContact(Contact ct);
+
+    bool isEmpty();
 
     private:
     Contact _contacts[BOOKSIZE];

@@ -1,4 +1,4 @@
-#include "main.hpp"
+#include "../Includes/main.hpp"
 
 Contact::Contact(void){
     return;
@@ -47,7 +47,7 @@ bool Contact::setNickname(std::string s){
     return true;
 }
 bool Contact::setNumber(std::string s){
-    if (!_isdigitStr(s))
+    if (!isdigitStr(s))
         return std::cout << s << ": Not a valid number\n", false;
     this->_phoneNumber = s;
     return true;
@@ -70,7 +70,7 @@ bool Contact::_isalphaStr(std::string s){
     return true;
 }
 
-bool Contact::_isdigitStr(std::string s){
+bool Contact::isdigitStr(std::string s){
     if (s.empty())
         return false;
     for (std::string::iterator i = s.begin(); i != s.end(); ++i){

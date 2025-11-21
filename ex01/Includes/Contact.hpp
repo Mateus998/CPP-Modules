@@ -20,6 +20,8 @@ class Contact{
     bool setNumber(std::string s);
     bool setSecret(std::string s);
 
+    static bool isdigitStr(std::string s);
+
     private:
     std::string _firstName;
     std::string _lastName;
@@ -27,7 +29,6 @@ class Contact{
     std::string _phoneNumber;
     std::string _darkestSecret;
     
-    static bool _isdigitStr(std::string s);
     static bool _isalphaStr(std::string s);
     static bool _isnickStr(std::string s);
     static bool _istextStr(std::string s);

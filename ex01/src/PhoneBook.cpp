@@ -1,4 +1,4 @@
-#include "main.hpp"
+#include "../Includes/main.hpp"
 
 PhoneBook::PhoneBook(){
     this->_numberOfContacts = 0;
@@ -13,18 +13,19 @@ int PhoneBook::getContactsNum(void) const{
     return this->_numberOfContacts;
 }
 
-bool PhoneBook::getContact(int index, Contact *ct){
+int PhoneBook::getContact(int index, Contact *ct){
     if (index >= 0 && index < this->_numberOfContacts){
         *ct = this->_contacts[index];
-        return true;
+        return 1;
     }
-    else if (this->_numberOfContacts == 0)
-        std::cout << "Empty Phonebook try 'ADD' some contacts\n";
+    else if (this->isEmpty()){
+        return 2;
+    }
     else{
-        std::cout << "Invalid index: " << index
-        << "\nAvailable range: 0 to " << this->_numberOfContacts << "\n";
+        std::cout << "Invalid index: " << index + 1
+        << "\nAvailable range: 1 to " << this->_numberOfContacts << "\n";
+        return 0;
     }
-    return false;
 }
 
 void PhoneBook::addContact(Contact cp){
@@ -38,6 +39,15 @@ void PhoneBook::addContact(Contact cp){
         }
     }
     conts[0] = cp;
-    this->_numberOfContacts++;
-    std::cout << "Contact added (" << numCont << "/8)\n";
+    if (numCont < BOOKSIZE)
+        this->_numberOfContacts++;
+    std::cout << "\nContact added (" << this->_numberOfContacts << "/8)\n";
+}
+
+bool PhoneBook::isEmpty(){
+    if(this->_numberOfContacts == 0){
+        std::cout << "Empty Phonebook try 'ADD' some contacts\n";
+        return true;
+    }
+    return false;
 }
