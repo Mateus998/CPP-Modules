@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   searchContact.cpp                                  :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: mateferr <mateferr@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/11/24 17:11:04 by mateferr          #+#    #+#             */
+/*   Updated: 2025/11/24 17:15:02 by mateferr         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../Includes/main.hpp"
 
 static void formatSearch(std::string s){
@@ -42,8 +54,10 @@ static Contact getContactByIndex(PhoneBook *book){
     while(true){
         std::cout << "Contact Index:\n";
         if (!std::getline(std::cin, input)){
+            if (std::cin.eof() || std::cin.bad())
+                exit(1);
             std::cin.clear();
-            // std::cin.ignore(std::numeric_limitsstd::streamsize::max(), '\n');
+            std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
             continue;
         }
         int idx;
