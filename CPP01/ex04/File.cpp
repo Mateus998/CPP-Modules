@@ -6,7 +6,7 @@
 /*   By: mateferr <mateferr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/27 17:31:20 by mateferr          #+#    #+#             */
-/*   Updated: 2025/11/27 19:30:51 by mateferr         ###   ########.fr       */
+/*   Updated: 2025/11/28 14:33:11 by mateferr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ std::fstream& File::getStream(void){
     return _fs;
 }
 
-void File::closeFile(void) const{
+void File::closeFile(void){
     if (_fs.is_open())
         _fs.close();
 }

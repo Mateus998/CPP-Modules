@@ -1,34 +1,33 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   File.hpp                                           :+:      :+:    :+:   */
+/*   Replacer.hpp                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mateferr <mateferr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/11/27 17:32:09 by mateferr          #+#    #+#             */
-/*   Updated: 2025/11/28 14:33:18 by mateferr         ###   ########.fr       */
+/*   Created: 2025/11/28 14:49:59 by mateferr          #+#    #+#             */
+/*   Updated: 2025/11/28 17:22:41 by mateferr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef FILE_HPP
-# define FILE_HPP
+#ifndef REPLACER_HPP
+# define REPLACER_HPP
 
-#include <iostream>
-#include <fstream>
+#include "File.hpp"
+#include <sstream>
 
-class File{
+class Replacer{
     public:
-        File(std::string fileName);
-        ~File(void);
-    
-        bool openRead(void);
-        bool openWrite(void);
-        void closeFile(void);
-        std::fstream& getStream(void);
+        Replacer(std::string s1, std::string s2);
+        ~Replacer(void);
         
-    private:
-        std::string _fileName;
-        std::fstream _fs;
+        void processFiles(std::fstream& input, std::fstream& output);
+
+        private:
+        std::string _s1;
+        std::string _s2;
+        std::string _fstreamToString(std::fstream& fs);
+        std::string _replaceString(std::string input);
 };
 
 #endif

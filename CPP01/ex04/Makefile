@@ -6,13 +6,13 @@
 #    By: mateferr <mateferr@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/11/24 17:16:35 by mateferr          #+#    #+#              #
-#    Updated: 2025/11/27 18:50:45 by mateferr         ###   ########.fr        #
+#    Updated: 2025/11/28 17:10:17 by mateferr         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = ex04
 
-SRC = main.cpp Arguments.cpp File.cpp
+SRC = main.cpp Arguments.cpp File.cpp Replacer.cpp
 
 OBJ_DIR = obj
 
