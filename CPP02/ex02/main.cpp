@@ -1,33 +1,27 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   Fixed.hpp                                          :+:      :+:    :+:   */
+/*   main.cpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mateferr <mateferr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/12/01 15:21:13 by mateferr          #+#    #+#             */
-/*   Updated: 2025/12/02 15:17:03 by mateferr         ###   ########.fr       */
+/*   Created: 2025/11/27 17:31:43 by mateferr          #+#    #+#             */
+/*   Updated: 2025/12/02 19:25:36 by mateferr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef FIXED_HPP
-# define FIXED_HPP
+#include "Fixed.hpp"
 
-#include <iostream>
-
-class Fixed{
-    public:
-        Fixed(void);
-        Fixed(const Fixed& f);
-        ~Fixed(void);
-
-        Fixed& operator=(const Fixed& f);
-
-        int getRawBits(void) const;
-        void setRawBits(int const raw);
-    private:
-        int _raw;
-        static const int _bit;
-};
-
-#endif
+int main( void ) {
+Fixed a;
+Fixed const b( Fixed( 5.05f ) * Fixed( 2 ) );
+std::cout << a << std::endl;
+std::cout << ++a << std::endl;
+std::cout << a << std::endl;
+std::cout << a++ << std::endl;
+std::cout << a << std::endl;
+std::cout << b << std::endl;
+std::cout << Fixed::max( a, b ) << std::endl;
+return 0;
+}
+// mudar equacoes -> resolver em n para retornar Fixed(x)
