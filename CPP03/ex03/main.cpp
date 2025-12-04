@@ -10,19 +10,19 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "ScavTrap.hpp"
+#include "DiamondTrap.hpp"
 
 int main( void ) {
-    ScavTrap a;
-    ScavTrap b("bObj");
-    ScavTrap c("cObj");
-    c.attack("bObj");
-    b.takeDamage(5);
+    DiamondTrap b("bObj");
+    DiamondTrap c("cObj");
+    DiamondTrap a(c);
+    DiamondTrap d;
+    c.attack(b.getName());
+    b.takeDamage(c.getAttack());
     b.beRepaired(5);
-    a = c;
-    a.attack("cObj");
-    a.guardGate();
-    b.guardGate();
-    c.guardGate();
+    a.attack(c.getName());
+    a.whoAmI();
+    b.whoAmI();
+    c.whoAmI();
 return 0;
 }

@@ -10,19 +10,19 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "ScavTrap.hpp"
+#include "FragTrap.hpp"
 
 int main( void ) {
-    ScavTrap a;
-    ScavTrap b("bObj");
-    ScavTrap c("cObj");
+    FragTrap a;
+    FragTrap b("bObj");
+    FragTrap c("cObj");
     c.attack("bObj");
     b.takeDamage(5);
     b.beRepaired(5);
     a = c;
     a.attack("cObj");
-    a.guardGate();
-    b.guardGate();
-    c.guardGate();
+    a.highFivesGuys();
+    b.highFivesGuys();
+    c.highFivesGuys();
 return 0;
 }
