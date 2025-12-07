@@ -1,0 +1,28 @@
+#include "WrongCat.hpp"
+
+WrongCat::WrongCat(void){
+    type = "WrongCat";
+    std::cout << "WrongCat default constructor called\n";
+}
+
+WrongCat::WrongCat(const WrongCat& d):WrongAnimal(d){
+    *this = d;
+    std::cout << "WrongCat copy constructor called\n";
+}
+
+WrongCat::~WrongCat(void){
+    std::cout << "WrongCat destructor called\n";
+}
+
+WrongCat& WrongCat::operator=(const WrongCat& d){
+    type = d.type;
+    return *this;
+}
+
+void WrongCat::makeSound(void) const{
+    std::cout << type << ": miau miau\n";
+}
+
+std::string WrongCat::getType(void) const{
+    return type;
+}

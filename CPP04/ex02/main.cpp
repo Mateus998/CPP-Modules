@@ -15,7 +15,7 @@
 
 int main( void ) {
     int arraySize = 10;
-    Animal* animals[arraySize];
+    AAnimal* animals[arraySize];
     for (int i = 0; i < arraySize / 2; i++){
         animals[i] = new Dog();
     }
@@ -25,10 +25,5 @@ int main( void ) {
     for (int i = 0; i < arraySize; i++){
         delete animals[i];
     }
-    Dog* d1 = new Dog();
-    Dog* d2 = new Dog(*d1);
-    d1->getBrain()->setIdea("hello d1");
-    d2->getBrain()->setIdea("hello d2");
-    std::cout << d1->getBrain()->ideas[0] << " " << d2->getBrain()->ideas[0] << std::endl;
 return 0;
 }

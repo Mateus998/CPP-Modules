@@ -1,23 +1,23 @@
 #include "Animal.hpp"
 
-Animal::Animal(void){
+AAnimal::AAnimal(void){
     std::cout << "Animal default constructor called\n";
 }
 
-Animal::Animal(const Animal& a){
+AAnimal::AAnimal(const AAnimal& a){
     std::cout << "Animal copy constructor called\n";
     *this = a;
 }
 
-Animal::~Animal(void){
+AAnimal::~AAnimal(void){
     std::cout << "Animal destructor called\n";
 }
 
-Animal& Animal::operator=(const Animal& a){
+AAnimal& AAnimal::operator=(const AAnimal& a){
     (void)a;
     return *this;
 }
 
-void Animal::makeSound(void){
+void AAnimal::makeSound(void){
     std::cout << "Generic animal sound\n";
 }

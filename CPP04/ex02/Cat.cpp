@@ -6,7 +6,7 @@ Cat::Cat(void){
     _brain = new Brain();
 }
 
-Cat::Cat(const Cat& d):Animal(d), _brain(new Brain(*d._brain)){
+Cat::Cat(const Cat& d):AAnimal(d), _brain(new Brain(*d._brain)){
     std::cout << "Cat copy constructor called\n";
     *this = d;
 }

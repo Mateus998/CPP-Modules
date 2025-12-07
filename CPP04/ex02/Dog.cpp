@@ -6,7 +6,7 @@ Dog::Dog(void){
     _brain = new Brain();
 }
 
-Dog::Dog(const Dog& d):Animal(d), _brain(new Brain(*d._brain)){
+Dog::Dog(const Dog& d):AAnimal(d), _brain(new Brain(*d._brain)){
     std::cout << "Dog copy constructor called\n";
     *this = d;
 }
@@ -22,7 +22,7 @@ Brain* Dog::getBrain(void)const{
 
 Dog& Dog::operator=(const Dog& d){
     type = d.type;
-    *_brain = *d._brain;
+    *_brain = *d.getBrain();
     return *this;
 }
 
