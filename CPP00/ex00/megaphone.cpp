@@ -6,7 +6,7 @@
 /*   By: mateferr <mateferr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/24 17:10:26 by mateferr          #+#    #+#             */
-/*   Updated: 2025/12/09 11:39:06 by mateferr         ###   ########.fr       */
+/*   Updated: 2025/12/09 15:23:53 by mateferr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,8 @@
 
 int main(int argc, char *argv[])
 {
+    if (argc == 1)
+        std::cout << "* LOUD AND UNBEARABLE FEEDBACK NOISE *";
     for (int i = 1; i < argc; ++i)
     {
         std::string s = argv[i];

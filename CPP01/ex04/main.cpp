@@ -6,7 +6,7 @@
 /*   By: mateferr <mateferr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/27 17:31:43 by mateferr          #+#    #+#             */
-/*   Updated: 2025/11/28 17:12:38 by mateferr         ###   ########.fr       */
+/*   Updated: 2025/12/09 14:41:36 by mateferr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,3 @@ int main(int argc, char **argv)
     replace.processFiles(infile.getStream(), outfile.getStream());
     return 0;
 }
-
-//documentar e estudar funcoes string utilizadas
-//partir .processFiles em mais funções

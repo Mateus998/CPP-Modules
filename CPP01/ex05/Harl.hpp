@@ -6,7 +6,7 @@
 /*   By: mateferr <mateferr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/01 11:09:10 by mateferr          #+#    #+#             */
-/*   Updated: 2025/12/01 12:45:57 by mateferr         ###   ########.fr       */
+/*   Updated: 2025/12/09 17:01:54 by mateferr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,18 +14,17 @@
 # define HARL_HPP
 
 #include <iostream>
-#include <map>
 
 class Harl{
     public:
-        typedef void (Harl::*Level)(void);
         Harl(void);
         ~Harl(void);
         
         void complain(std::string level);
         
     private:
-        std::map<std::string, Level> levels_; 
+        void (Harl::*_levels[4])();
+        std::string _inputs[4];
         void debug(void);
         void info(void);
         void warning(void);

@@ -6,34 +6,37 @@
 /*   By: mateferr <mateferr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/01 11:23:49 by mateferr          #+#    #+#             */
-/*   Updated: 2025/12/01 12:45:33 by mateferr         ###   ########.fr       */
+/*   Updated: 2025/12/09 17:19:39 by mateferr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "Harl.hpp"
 
 Harl::Harl(void){
-    levels_["DEBUG"] = &Harl::debug;
-    levels_["INFO"] = &Harl::info;
-    levels_["WARNING"] = &Harl::warning;
-    levels_["ERROR"] = &Harl::error;
+    _levels[0] = &Harl::debug;
+    _levels[1] = &Harl::info;
+    _levels[2] = &Harl::warning;
+    _levels[3] = &Harl::error;
+    _inputs[0] = "DEBUG";
+    _inputs[1] = "INFO";
+    _inputs[2] = "WARNING";
+    _inputs[3] = "ERROR";
 }
 
 Harl::~Harl(void){}
 
 void Harl::complain(std::string level){
-    std::map<std::string, Level>::iterator it = levels_.find(level);
-    if(it != levels_.end()){
-        Level lvl = it->second;
-        (this->*lvl)();
-    } else{
-        std::cerr << "Invalid level: " << level << "\n";
+    for (int i = 0; i < 4; i++){
+        if(level == _inputs[i]){
+           return (this->*_levels[i])();
+        }
     }
+    std::cerr << "Invalid level: " << level << "\n";
 }
 
 void Harl::debug(void){
     std::cout << "DEBUG msg: I love having extra bacon for my" <<
-    "7XL-double-cheese-triple-pickle-special-ketchup burger. I really do!\n";
+    " 7XL-double-cheese-triple-pickle-special-ketchup burger. I really do!\n";
 }
 
 void Harl::info(void){

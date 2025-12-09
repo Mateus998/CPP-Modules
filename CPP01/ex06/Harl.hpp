@@ -6,7 +6,7 @@
 /*   By: mateferr <mateferr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/01 11:09:10 by mateferr          #+#    #+#             */
-/*   Updated: 2025/12/01 12:46:33 by mateferr         ###   ########.fr       */
+/*   Updated: 2025/12/09 17:49:18 by mateferr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,6 @@
 # define HARL_HPP
 
 #include <iostream>
-#include <map>
 
 class Harl{
     public:

@@ -6,7 +6,7 @@
 #    By: mateferr <mateferr@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/11/24 17:11:15 by mateferr          #+#    #+#              #
-#    Updated: 2025/11/24 17:16:07 by mateferr         ###   ########.fr        #
+#    Updated: 2025/12/09 15:26:38 by mateferr         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -20,17 +20,17 @@ OBJ_DIR = obj
 
 OBJ = $(addprefix $(OBJ_DIR)/, $(SRC:.cpp=.o))
 
-CC = c++
-CFLAGS = -Wall -Wextra -Werror -std=c++98
+CPP = c++
+CPPFLAGS = -Wall -Wextra -Werror -std=c++98
 
 all: $(NAME) 
 
 $(NAME): $(OBJ)
-	$(CC) $(CFLAGS) -I$(INC_DIR) $(OBJ) -o $(NAME)
+	$(CPP) $(CPPFLAGS) -I$(INC_DIR) $(OBJ) -o $(NAME)
 
 $(OBJ_DIR)/%.o: %.cpp
 	mkdir -p $(dir $@)
-	$(CC) $(CFLAGS) -c $< -o $@
+	$(CPP) $(CPPFLAGS) -c $< -o $@
 
 clean:
 	rm -rf $(OBJ_DIR)

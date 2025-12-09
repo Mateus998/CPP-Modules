@@ -6,7 +6,7 @@
 /*   By: mateferr <mateferr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/01 11:23:49 by mateferr          #+#    #+#             */
-/*   Updated: 2025/12/01 12:49:42 by mateferr         ###   ########.fr       */
+/*   Updated: 2025/12/09 17:37:20 by mateferr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,24 +29,18 @@ void Harl::complains(const std::string arg){
     switch (lvl){
         case DEBUG:
             debug();
-            info();
-            warning();
-            error();
-            break;
+            // fall through
         case INFO:
             info();
-            warning();
-            error();
-            break;
+            // fall through 
         case WARNING:
             warning();
-            error();
-            break;
+            // fall through 
         case ERROR:
             error();
             break;
         default:
-            std::cout << "Invalid level: " << arg << '\n';
+            std::cout << "[ Probably complaining about insignificant problems ]\n";
             break;
     }
 }
