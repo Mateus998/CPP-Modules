@@ -6,13 +6,15 @@
 /*   By: mateferr <mateferr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/24 17:11:04 by mateferr          #+#    #+#             */
-/*   Updated: 2025/11/24 17:15:02 by mateferr         ###   ########.fr       */
+/*   Updated: 2025/12/09 12:01:01 by mateferr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../Includes/main.hpp"
 
 static void formatSearch(std::string s){
+    if(s.size() < 10)
+        s = std::string(10 - s.size(), ' ') + s;
     for (std::size_t i = 0; i < 10; ++i){
         if (i < s.size()){
             if (i == 9 && s.size() > 10)

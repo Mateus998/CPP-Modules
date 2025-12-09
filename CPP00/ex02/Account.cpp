@@ -6,7 +6,7 @@
 /*   By: mateferr <mateferr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/24 17:11:42 by mateferr          #+#    #+#             */
-/*   Updated: 2025/11/24 17:16:19 by mateferr         ###   ########.fr       */
+/*   Updated: 2025/12/09 12:24:24 by mateferr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,7 @@ Account::Account( int initial_deposit ){
     this->_amount = initial_deposit;
     this->_nbDeposits = 0;
     this->_nbWithdrawals = 0;
-    this->_totalAmount += initial_deposit;
+    _totalAmount += initial_deposit;
     Account::_displayTimestamp();
     std::cout << "index:" << this->_accountIndex
     << ";amount:" << initial_deposit << ";created"
@@ -80,7 +80,7 @@ Account::~Account( void ){
 
 void	Account::makeDeposit( int deposit ){
     this->_nbDeposits++;
-    this->_totalNbDeposits++;
+    _totalNbDeposits++;
     Account::_displayTimestamp();
     std::cout << "index:" << this->_accountIndex
     << ";p_amount:" << this->_amount
@@ -88,7 +88,7 @@ void	Account::makeDeposit( int deposit ){
     this->_amount += deposit;
     std::cout << ";amount:" << this->_amount
     << ";nb_deposits:" << this->_nbDeposits << '\n';
-    this->_totalAmount += deposit;
+    _totalAmount += deposit;
 }
 
 bool	Account::makeWithdrawal( int withdrawal ){
@@ -101,14 +101,14 @@ bool	Account::makeWithdrawal( int withdrawal ){
         return false;
     }
     this->_nbWithdrawals++;
-    this->_totalNbWithdrawals++;
+    _totalNbWithdrawals++;
     std::cout << "index:" << this->_accountIndex
     << ";p_amount:" << this->_amount
     << ";withdrawal:" << withdrawal;
     this->_amount -= withdrawal;
     std::cout << ";amount:" << this->_amount
     << ";nb_withdrawals:" << this->_nbWithdrawals << '\n';
-    this->_totalAmount -= withdrawal;
+    _totalAmount -= withdrawal;
     return true;
 }
 

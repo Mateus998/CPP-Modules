@@ -6,7 +6,7 @@
 /*   By: mateferr <mateferr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/24 17:10:26 by mateferr          #+#    #+#             */
-/*   Updated: 2025/11/24 17:14:47 by mateferr         ###   ########.fr       */
+/*   Updated: 2025/12/09 11:39:06 by mateferr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,8 @@ int main(int argc, char *argv[])
     for (int i = 1; i < argc; ++i)
     {
         std::string s = argv[i];
+        if(s.empty())
+            continue;
         for (std::string::iterator j = s.begin(); j != s.end(); j++)
         {
             unsigned char c = static_cast<unsigned char>(*j);

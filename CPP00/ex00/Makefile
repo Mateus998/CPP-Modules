@@ -6,7 +6,7 @@
 #    By: mateferr <mateferr@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/11/24 17:11:19 by mateferr          #+#    #+#              #
-#    Updated: 2025/11/24 17:14:43 by mateferr         ###   ########.fr        #
+#    Updated: 2025/12/09 11:14:57 by mateferr         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -20,10 +20,6 @@ all: $(NAME)
 
 $(NAME): $(OBJ)
 	$(CC) $(CFLAGS) $(OBJ) -o $(NAME)
-
-
-# %.o: %.cpp
-# 	$(CC) $(CFLAGS) -c $< -o $@
 
 clean:
 	rm -f $(OBJ)
