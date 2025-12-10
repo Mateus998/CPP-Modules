@@ -6,7 +6,7 @@
 /*   By: mateferr <mateferr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/25 16:08:00 by mateferr          #+#    #+#             */
-/*   Updated: 2025/11/25 18:00:46 by mateferr         ###   ########.fr       */
+/*   Updated: 2025/12/10 12:55:05 by mateferr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,8 @@ void HumanB::setName(std::string name){
 }
 
 void HumanB::attack(void) const{
+    if(this->_weapon == NULL)
+        return;
     std::cout << this->_name
     << " attacks with their "
     << this->_weapon->getType()

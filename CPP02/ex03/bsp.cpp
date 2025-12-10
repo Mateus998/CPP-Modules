@@ -6,7 +6,7 @@
 /*   By: mateferr <mateferr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/03 14:57:07 by mateferr          #+#    #+#             */
-/*   Updated: 2025/12/03 17:59:36 by mateferr         ###   ########.fr       */
+/*   Updated: 2025/12/10 19:26:18 by mateferr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,10 +39,6 @@ static double triangleCalc(Point const l, Point const p, Point const r){
     double lp = edgeCalc(l,p);
     double pr = edgeCalc(p,r);
     double lr = edgeCalc(l,r);
-    std::cout << "\nlados\n";
-    std::cout << lp << '\n';
-    std::cout << pr << '\n';
-    std::cout << lr << '\n';
     return angleCalc(lr, lp, pr);
 }
 
@@ -50,11 +46,9 @@ bool bsp(Point const a, Point const b, Point const c, Point const point){
     double angleAPB = triangleCalc(a, point, b);
     double angleAPC = triangleCalc(a, point, c);
     double angleBPC = triangleCalc(b, point, c);
-    std::cout << "\nangulos\n";
-    std::cout << angleAPB << '\n';
-    std::cout << angleAPC << '\n';
-    std::cout << angleBPC << '\n';
-    std::cout << angleAPB + angleAPC + angleBPC << '\n';
+    if (angleAPB == 180) return false;
+    if (angleAPC == 180) return false;
+    if (angleBPC == 180) return false;
     if (angleAPB + angleAPC + angleBPC == 360)
         return true;
     return false;

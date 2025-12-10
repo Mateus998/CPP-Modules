@@ -6,7 +6,7 @@
 /*   By: mateferr <mateferr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/09 17:44:13 by mateferr          #+#    #+#             */
-/*   Updated: 2025/12/09 17:47:50 by mateferr         ###   ########.fr       */
+/*   Updated: 2025/12/10 19:17:36 by mateferr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,10 +21,10 @@ class AAnimal{
     public:
         AAnimal(void);
         AAnimal(const AAnimal& a);
-        virtual ~AAnimal(void) = 0;
+        virtual ~AAnimal(void);
         AAnimal& operator=(const AAnimal& a);
 
-        virtual void makeSound(void);
+        virtual void makeSound(void) = 0;
 };
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: mateferr <mateferr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/27 17:31:43 by mateferr          #+#    #+#             */
-/*   Updated: 2025/12/02 16:07:08 by mateferr         ###   ########.fr       */
+/*   Updated: 2025/12/10 13:15:48 by mateferr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 int main( void ) {
 Fixed a;
 Fixed const b( 102 );
-Fixed const c( INT_MAX );
+Fixed const c( 42.42f );
 Fixed const d( b );
 a = Fixed( 1234.4321f );
 std::cout << "a is " << a << std::endl;

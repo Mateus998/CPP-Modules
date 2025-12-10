@@ -6,7 +6,7 @@
 /*   By: mateferr <mateferr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/01 15:21:13 by mateferr          #+#    #+#             */
-/*   Updated: 2025/12/02 16:06:55 by mateferr         ###   ########.fr       */
+/*   Updated: 2025/12/10 13:10:36 by mateferr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ class Fixed{
     private:
         int _raw;
         static const int _bit;
-    };
-    std::ostream& operator<<(std::ostream& os, const Fixed& n);
+};
+std::ostream& operator<<(std::ostream& os, const Fixed& n);
 
 #endif

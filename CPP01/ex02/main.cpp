@@ -6,7 +6,7 @@
 /*   By: mateferr <mateferr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/25 14:58:24 by mateferr          #+#    #+#             */
-/*   Updated: 2025/12/09 14:12:39 by mateferr         ###   ########.fr       */
+/*   Updated: 2025/12/09 17:53:25 by mateferr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,7 @@ int main(){
     << "\nValue of the string: " << str << '\n'
     << "Value pointed to by stringPTR: " << *stringPTR << '\n'
     << "Value pointed to by stringREF: " << stringREF << '\n';
+    
     stringREF = str2;
     stringPTR = &str2;
     std::cout

@@ -6,7 +6,7 @@
 /*   By: mateferr <mateferr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/27 17:31:20 by mateferr          #+#    #+#             */
-/*   Updated: 2025/11/28 14:33:11 by mateferr         ###   ########.fr       */
+/*   Updated: 2025/12/10 11:23:09 by mateferr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,25 +18,27 @@ File::~File(void){
     closeFile();
 }
 
-bool File::openRead(void){
-    _fs.open(_fileName.c_str(), std::ios::in);
-    if (!_fs.is_open())
+bool File::openStreams(void){
+    _ifs.open(_fileName.c_str(), std::ios::in);
+    if (!_ifs.is_open())
         return std::cerr << "Error opening read file\n", false;
-    return true;
-}
-
-bool File::openWrite(void){
-    _fs.open(_fileName.c_str(), std::ios::out | std::ios::trunc);
-    if (!_fs.is_open())
+    _ofs.open((_fileName + ".replace").c_str(), std::ios::out | std::ios::trunc);
+    if (!_ofs.is_open())
         return std::cerr << "Error opening write file\n", false;
     return true;
 }
 
-std::fstream& File::getStream(void){
-    return _fs;
+std::ifstream& File::getIstream(void){
+    return _ifs;
+}
+
+std::ofstream& File::getOstream(void){
+    return _ofs;
 }
 
 void File::closeFile(void){
-    if (_fs.is_open())
-        _fs.close();
+    if (_ifs.is_open())
+        _ifs.close();
+    if (_ofs.is_open())
+        _ofs.close();
 }

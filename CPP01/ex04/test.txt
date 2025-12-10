@@ -1,4 +1,0 @@
-hello world
-world hello
-1234 hello 5678
-helloworld

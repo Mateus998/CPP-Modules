@@ -6,7 +6,7 @@
 /*   By: mateferr <mateferr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/28 14:56:38 by mateferr          #+#    #+#             */
-/*   Updated: 2025/11/28 17:25:19 by mateferr         ###   ########.fr       */
+/*   Updated: 2025/12/10 11:32:38 by mateferr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ Replacer::Replacer(std::string s1, std::string s2){
 
 Replacer::~Replacer(void){}
 
-std::string Replacer::_fstreamToString(std::fstream& fs){
+std::string Replacer::_fstreamToString(std::ifstream& fs){
     std::ostringstream oss;
     oss << fs.rdbuf();
     std::string string = oss.str();
@@ -42,10 +42,12 @@ std::string Replacer::_replaceString(std::string input){
     return output;
 }
 
-void Replacer::processFiles(std::fstream& input, std::fstream& output){
+bool Replacer::processFiles(std::ifstream& input, std::ofstream& output){
     std::string inputString = _fstreamToString(input);
-
+    if(inputString.empty())
+        return std::cerr << "Infile is empty\n", false;
     std::string outputString = _replaceString(inputString);
     
     output << outputString;
+    return true;
 }
