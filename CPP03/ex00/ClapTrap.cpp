@@ -6,7 +6,7 @@
 /*   By: mateferr <mateferr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/03 18:34:11 by mateferr          #+#    #+#             */
-/*   Updated: 2025/12/04 14:20:41 by mateferr         ###   ########.fr       */
+/*   Updated: 2025/12/12 16:38:09 by mateferr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,8 +20,7 @@ ClapTrap::ClapTrap(void){
     std::cout << "Default constructor called for " << _name << '\n';
 }
 
-ClapTrap::ClapTrap(std::string name){
-    _name = name;
+ClapTrap::ClapTrap(const std::string& name):_name(name){
     _hit = 10;
     _attack = 0;
     _energy = 10;

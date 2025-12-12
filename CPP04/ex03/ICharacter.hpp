@@ -6,14 +6,16 @@
 /*   By: mateferr <mateferr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/09 17:45:02 by mateferr          #+#    #+#             */
-/*   Updated: 2025/12/09 17:48:23 by mateferr         ###   ########.fr       */
+/*   Updated: 2025/12/12 17:08:11 by mateferr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef ICHARACTER_HPP
-#define ICHARACETER_HPP
+#define ICHARACTER_HPP
 
 #include "AMateria.hpp"
+
+class AMateria;
 
 class ICharacter
 {

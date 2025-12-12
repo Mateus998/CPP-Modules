@@ -6,13 +6,13 @@
 #    By: mateferr <mateferr@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/11/24 17:16:35 by mateferr          #+#    #+#              #
-#    Updated: 2025/12/04 14:22:22 by mateferr         ###   ########.fr        #
+#    Updated: 2025/12/12 16:44:20 by mateferr         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = ex03
 
-SRC = main.cpp 
+SRC = main.cpp AMateria.cpp Character.cpp Cure.cpp Ice.cpp
 
 OBJ_DIR = obj
 

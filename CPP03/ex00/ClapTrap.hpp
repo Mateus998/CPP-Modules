@@ -6,7 +6,7 @@
 /*   By: mateferr <mateferr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/03 18:25:48 by mateferr          #+#    #+#             */
-/*   Updated: 2025/12/03 18:40:40 by mateferr         ###   ########.fr       */
+/*   Updated: 2025/12/12 16:41:13 by mateferr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ class ClapTrap{
     
     public:
         ClapTrap(void);
-        ClapTrap(const std::string _name);
+        ClapTrap(const std::string& _name);
         ClapTrap(const ClapTrap& copy);
         ~ClapTrap(void);
         ClapTrap& operator=(const ClapTrap& copy);
