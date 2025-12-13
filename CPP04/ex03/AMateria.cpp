@@ -32,5 +32,5 @@ std::string const & AMateria::getType() const{
 }
 
 void AMateria::use(ICharacter& target){
-    std::cout << "* generic magic spell casted to " << target.getName() << " *" << std::endl;
+    std::cout << "* generic spell casted to " << target.getName() << " *" << std::endl;
 }

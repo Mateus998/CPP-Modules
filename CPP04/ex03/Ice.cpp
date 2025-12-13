@@ -16,9 +16,7 @@ Ice::Ice(void): AMateria("ice"){}
 
 Ice::Ice(const Ice& i): AMateria(i){}
 
-Ice::~Ice(void){
-    delete this;
-}
+Ice::~Ice(void){}
 
 Ice& Ice::operator=(const Ice& m){
     (void)m;

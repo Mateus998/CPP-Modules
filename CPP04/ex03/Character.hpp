@@ -22,6 +22,7 @@ class Character : public ICharacter
         AMateria* _inventory[4];
         AMateria** _discart;
         int _discartCount;
+        static int _disIncrement;
     public:
         Character(void);
         Character(const std::string& name);
