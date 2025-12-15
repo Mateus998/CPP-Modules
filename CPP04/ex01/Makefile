@@ -6,13 +6,13 @@
 #    By: mateferr <mateferr@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/11/24 17:16:35 by mateferr          #+#    #+#              #
-#    Updated: 2025/12/10 17:56:15 by mateferr         ###   ########.fr        #
+#    Updated: 2025/12/15 11:09:47 by mateferr         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = ex01
 
-SRC = main.cpp Animal.cpp Dog.cpp Cat.cpp WrongCat.cpp WrongAnimal.cpp Brain.cpp
+SRC = main.cpp Animal.cpp Dog.cpp Cat.cpp Brain.cpp
 
 OBJ_DIR = obj
 

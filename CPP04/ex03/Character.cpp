@@ -6,7 +6,7 @@
 /*   By: mateferr <mateferr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/09 17:44:50 by mateferr          #+#    #+#             */
-/*   Updated: 2025/12/12 19:10:12 by mateferr         ###   ########.fr       */
+/*   Updated: 2025/12/15 11:27:02 by mateferr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,6 +79,7 @@ void Character::equip(AMateria* m){
         }
     }
     std::cout << this->getName() << "'s inventory is full" << std::endl;
+    delete m;
 }
 
 void Character::unequip(int idx){
