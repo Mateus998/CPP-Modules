@@ -6,7 +6,7 @@
 /*   By: mateferr <mateferr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/03 17:33:36 by mateferr          #+#    #+#             */
-/*   Updated: 2026/02/03 18:20:34 by mateferr         ###   ########.fr       */
+/*   Updated: 2026/03/31 19:15:38 by mateferr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,17 +19,9 @@
 
 class Intern{
     private:
-    enum FORM{
-      PRESIDENTIAL = 0,
-      ROBOTOMY = 1,
-      SHRUBBERY = 2,
-      UNKNOWN = 3  
-    };
-    FORM formType(const std::string& type);
-    class InvalidFormName : public std::exception{
-        public:
-        const char* what() const throw();
-    };
+    AForm* newRobotomy(const std::string& target);
+    AForm* newPresidential(const std::string& target);
+    AForm* newShrubbery(const std::string& target);
 
     public:
     Intern(void);
