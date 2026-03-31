@@ -6,7 +6,7 @@
 /*   By: mateferr <mateferr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/02 13:05:03 by mateferr          #+#    #+#             */
-/*   Updated: 2026/02/02 17:44:09 by mateferr         ###   ########.fr       */
+/*   Updated: 2026/03/31 17:21:09 by mateferr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ Bureaucrat::Bureaucrat(const std::string& name, int grade): _name(name), _grade(
         throw GradeTooLowException();
 }
 
-Bureaucrat::Bureaucrat(const Bureaucrat& b){
+Bureaucrat::Bureaucrat(const Bureaucrat& b): _name(b._name){
     *this = b;
 }
 
