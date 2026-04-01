@@ -6,7 +6,7 @@
 /*   By: mateferr <mateferr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/27 17:31:43 by mateferr          #+#    #+#             */
-/*   Updated: 2026/02/05 13:58:54 by mateferr         ###   ########.fr       */
+/*   Updated: 2026/04/01 22:59:16 by mateferr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,3 +25,6 @@ int main(void) {
         std::cout << e.what() << std::endl;
     }
 }
+// criar operador [] para const
+// testar com outros tipos de variavel
+// ver como é .tpp file, possivel colocar execucoes de .hpp
