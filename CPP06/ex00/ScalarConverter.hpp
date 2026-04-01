@@ -6,7 +6,7 @@
 /*   By: mateferr <mateferr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/04 10:38:12 by mateferr          #+#    #+#             */
-/*   Updated: 2026/02/04 17:38:52 by mateferr         ###   ########.fr       */
+/*   Updated: 2026/04/01 14:30:35 by mateferr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,8 @@
 #define SCALARCONVERTER_HPP
 
 #include <iostream>
-#include <limits>
+#include <climits>
+#include <cfloat>
 #include <cstdlib>
 
 class ScalarConverter{
