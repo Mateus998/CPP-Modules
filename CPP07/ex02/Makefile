@@ -6,13 +6,14 @@
 #    By: mateferr <mateferr@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/11/24 17:16:35 by mateferr          #+#    #+#              #
-#    Updated: 2026/02/05 11:59:20 by mateferr         ###   ########.fr        #
+#    Updated: 2026/04/02 12:04:54 by mateferr         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = ex02
 
 SRC = main.cpp
+TPP = Array.tpp
 
 OBJ_DIR = obj
 
@@ -26,7 +27,7 @@ all: $(NAME)
 $(NAME): $(OBJ)
 	$(CPP) $(CPPFLAGS) $(OBJ) -o $(NAME)
 
-$(OBJ_DIR)/%.o: %.cpp
+$(OBJ_DIR)/%.o: %.cpp $(TPP)
 	mkdir -p $(dir $@)
 	$(CPP) $(CPPFLAGS) -c $< -o $@
 
