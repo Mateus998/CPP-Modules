@@ -6,7 +6,7 @@
 /*   By: mateferr <mateferr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/05 18:39:37 by mateferr          #+#    #+#             */
-/*   Updated: 2026/02/05 20:06:37 by mateferr         ###   ########.fr       */
+/*   Updated: 2026/04/02 16:41:44 by mateferr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,8 @@
 #include <vector>
 #include <stdexcept>
 #include <iostream>
+#include <iterator>
+#include <cstddef>
 
 class Span{
     private:
@@ -37,9 +39,14 @@ class Span{
 
     template<typename I>
     void addNumbers(I begin, I end){
-        for (; begin != end; begin++){
-            this->addNumber(*begin);
-        }
+        std::ptrdiff_t range = std::distance(begin, end);
+        if(range < 0)
+            throw std::logic_error("Invalid range");
+            
+        if(_storage.size() + static_cast<size_t>(range) > _capacity)
+            throw std::logic_error("Not enough space left");
+        
+        _storage.insert(_storage.end(), begin, end);
     };
 };
 

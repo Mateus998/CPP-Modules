@@ -6,7 +6,7 @@
 /*   By: mateferr <mateferr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/05 18:50:31 by mateferr          #+#    #+#             */
-/*   Updated: 2026/02/05 19:46:06 by mateferr         ###   ########.fr       */
+/*   Updated: 2026/04/02 16:32:48 by mateferr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ Span& Span::operator=(const Span& other){
 
 void Span::addNumber(int value){
     if (this->_storage.size() == this->_capacity)
-        throw std::overflow_error("Storage out of space");
+        throw std::overflow_error("Storage is full");
     
     this->_storage.push_back(value);
 };
