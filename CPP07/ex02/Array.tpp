@@ -6,7 +6,7 @@
 /*   By: mateferr <mateferr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/02 11:42:20 by mateferr          #+#    #+#             */
-/*   Updated: 2026/04/02 12:37:29 by mateferr         ###   ########.fr       */
+/*   Updated: 2026/04/14 20:25:34 by mateferr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ Array<T>& Array<T>::operator=(const Array<T>& other){
 
 template<typename T>
 T& Array<T>::operator[](const size_t i) const{
-    if (i >= _size || i < 0)
+    if (i >= _size)
         throw InvalidIdx();
     return this->_array[i];
 };
