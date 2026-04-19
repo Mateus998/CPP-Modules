@@ -6,13 +6,13 @@
 #    By: mateferr <mateferr@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/11/24 17:16:35 by mateferr          #+#    #+#              #
-#    Updated: 2026/02/10 14:34:13 by mateferr         ###   ########.fr        #
+#    Updated: 2026/04/19 20:26:51 by mateferr         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = PmergeMe
 
-SRC = main.cpp
+SRC = main.cpp parse.cpp
 
 OBJ_DIR = obj
 

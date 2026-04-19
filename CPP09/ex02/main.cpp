@@ -1,16 +1,6 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   main.cpp                                           :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: mateferr <mateferr@student.42.fr>          +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/11/27 17:31:43 by mateferr          #+#    #+#             */
-/*   Updated: 2026/04/18 17:28:09 by mateferr         ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
 #include "pmergeme.hpp"
+#include "pmergeme.tpp"
+#include "prints.tpp"
 
 int main(int argc, char* argv[]) {
     std::vector<int> vec;
@@ -29,8 +19,11 @@ int main(int argc, char* argv[]) {
     }
 
     dec.insert(dec.begin(), vec.begin(), vec.end());
-
-    print_numbers("Before: ", vec);
+    
+    // print_numbers<std::vector<int>>("Before: ", vec);
+    pmergeSort<std::vector<int>, std::vector<t_pair>>(vec);
+    // pmergeSort<std::deque<int>, std::deque<t_pair>>(dec);
+    // print_numbers<std::vector<int>>("After: ", vec);
     
     return 0;
 }

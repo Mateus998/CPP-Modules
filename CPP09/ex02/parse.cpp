@@ -6,6 +6,7 @@ static int convertToInt(const char *value)
     char* end = 0;
     long v = std::strtol(value, &end, 10);
     
+    if(std::string(value).empty()) throw std::logic_error("Empty string");
     if(*end != '\0') throw std::logic_error("Invalid char detected");
     if(end == value) throw std::logic_error("No digits found");
     if(errno == ERANGE) throw std::overflow_error("Out of range of long type");
