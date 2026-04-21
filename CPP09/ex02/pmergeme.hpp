@@ -21,4 +21,10 @@ typedef struct s_pair
 
 void parse(const char *value, std::vector<int>& vec);
 
+template <typename Cont, typename PairCont>
+void pmergeSort(Cont &c);
+
+#include "ford-jhonson.tpp"
+#include "prints.tpp"
+
 #endif

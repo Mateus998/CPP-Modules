@@ -73,7 +73,7 @@ void fordJhonsonSortPairsByBig(PairCont &pairs)
     PairCont biggers;
     PairCont smallers;
     bool hasStraggler = false;
-    int straggler = 0;
+    t_pair straggler;
 
     if(pairs.size() % 2 != 0)
     {
@@ -146,9 +146,9 @@ void pmergeSort(Cont &c)
         it = next;
         ++it;
     }
-    print_pairs<PairCont>("Before: ", pairs);
-    fordJhonsonSortPairsByBig<Cont, PairCont>(pairs);
-    print_pairs<PairCont>("After: ", pairs);
+    print_pairs("Before: ", pairs);
+    fordJhonsonSortPairsByBig(pairs);
+    print_pairs("After: ", pairs);
 }
 
 // como gerir o time - unidade e funcao gettime
