@@ -21,9 +21,9 @@ void print_pairs(const std::string& info, PairCont& c)
     typename PairCont::iterator it = c.begin();
     for (; it != c.end(); it++)
     {
-        std::cout << it->big << " " << it->small;
+        std::cout << it->big << "-" << it->small;
         if(it != c.end() - 1)
-            std::cout << " ";
+            std::cout << " | ";
     }
     std::cout << std::endl;
 }

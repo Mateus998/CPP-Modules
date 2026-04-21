@@ -1,42 +1,59 @@
 #include "pmergeme.hpp"
 
-template <typename Cont>
-Cont buildJacobsthalUpTo(int max)
+template < template <class, class> class C >
+struct Cont
+{
+    typedef C<size_t, std::allocator<size_t> > size_tCont;
+    typedef C<int,    std::allocator<int>    > intCont;
+    typedef C<bool,   std::allocator<bool>   > boolCont;
+    typedef C<t_pair, std::allocator<t_pair> > pairCont;
+};
+
+template < template <class, class> class C >
+typename Cont<C>::size_tCont buildJacobsthalUpTo(size_t max)
 {
     /*J(0)=0
     J(1)=1
     J(n)=J(n-1) + 2*J(n-2)*/
 
-    Cont jacob;
+    typedef typename Cont<C>::size_tCont Size_tCont;
+
+    Size_tCont jacob;
     jacob.push_back(0);
     jacob.push_back(1);
     while(jacob.back() < max)
     {
-        jacob.push_back(jacob.back() + 2 * *(jacob.end() - 2));
+        size_t n = jacob.size();
+        jacob.push_back(jacob[n - 1] + 2 * jacob[n - 2]);
     }
     return jacob;
 }
 
-template <typename Cont>
-Cont buildInsertionOrderFromJacob(size_t max)
+template < template <class, class> class C >
+typename Cont<C>::size_tCont buildInsertionOrderFromJacob(size_t max)
 {
-    Cont order;
-    Cont inserted(max, false);
-    Cont J = buildJacobsthalUpTo<Cont>(max);
+    typedef typename Cont<C>::size_tCont Size_tCont;
+    typedef typename Cont<C>::boolCont BoolCont;
+
+    Size_tCont order;
+    BoolCont inserted(max, false);
+    Size_tCont J = buildJacobsthalUpTo<C>(max);
 
     for(size_t k = 2; k <= J.size() - 1; k++)
     {
         size_t start = J[k - 1];
-        size_t end = min(J[k], max);
+        size_t end = std::min(static_cast<size_t>(J[k]), max);
 
-        for(size_t i = end - 1; i >= start; i--)
+        for (size_t i = end; i-- > start; )
         {
-            if(i >= 0 && i < max && !inserted[i])
+            if (i < max && !inserted[i])
             {
-                order.push_back;
+                order.push_back(i);
                 inserted[i] = true;
             }
         }
+
+
     }
 
     for(size_t i = 0; i < max; i++)
@@ -46,10 +63,12 @@ Cont buildInsertionOrderFromJacob(size_t max)
     return order;
 }
 
-template <typename PairCont>
-typename PairCont::iterator findByIdx(PairCont &result, const size_t idx)
+template < template <class, class> class C >
+typename Cont<C>::pairCont::iterator findByIdx(typename Cont<C>::pairCont &result, const size_t idx)
 {
-    typename PairCont::iterator it = result.begin();
+    typedef typename Cont<C>::pairCont::iterator It;
+
+    It it = result.begin();
     for(; it != result.end(); it++)
     {
         if(it->idx == idx)
@@ -58,7 +77,7 @@ typename PairCont::iterator findByIdx(PairCont &result, const size_t idx)
     return result.end();
 }
 
-struct ComparePairByBig
+struct ComparePairByBig //criar proprio binary search
 {
     bool operator()(t_pair const& a, t_pair const& b) const
     {
@@ -67,9 +86,34 @@ struct ComparePairByBig
     }
 };
 
-template <typename Cont, typename PairCont>
-void fordJhonsonSortPairsByBig(PairCont &pairs)
+template < template <class, class> class C >
+void insertSmallersPairsInBiggers(typename Cont<C>::pairCont &result, typename Cont<C>::pairCont &toInsert)
 {
+    typedef typename Cont<C>::size_tCont Size_tCont;
+    typedef typename Cont<C>::pairCont::iterator It;
+
+    Size_tCont insertOrder = buildInsertionOrderFromJacob<C>(toInsert.size());
+
+    ComparePairByBig cmp;
+    for(size_t i = 0; i < insertOrder.size(); i++)
+    {
+        int idx = insertOrder[i];
+        It biggerIt = findByIdx<C>(result, toInsert[idx].idx);
+        It limit = biggerIt + 1;
+        It pos = lower_bound(result.begin(), limit, toInsert[idx], cmp);
+        result.insert(pos, toInsert[idx]);
+    }
+}
+
+template < template <class, class> class C >
+void fordJhonsonSortPairsByBig(typename Cont<C>::pairCont &pairs)
+{
+    typedef typename Cont<C>::pairCont PairCont;
+    typedef typename PairCont::iterator It;
+
+    if (pairs.size() <= 1)
+        return;
+
     PairCont biggers;
     PairCont smallers;
     bool hasStraggler = false;
@@ -82,9 +126,9 @@ void fordJhonsonSortPairsByBig(PairCont &pairs)
     }
 
     size_t idx = 0;
-    for(typename PairCont::iterator it = pairs.begin(); it != pairs.end(); idx++)
+    for(It it = pairs.begin(); it != pairs.end(); idx++)
     {
-        typename PairCont::iterator next = it;
+        It next = it;
         ++next;
         if(next == pairs.end()) break;
 
@@ -100,27 +144,24 @@ void fordJhonsonSortPairsByBig(PairCont &pairs)
         ++it;
     }
 
-    fordJhonsonSortPairsByBig(biggers);
+    fordJhonsonSortPairsByBig<C>(biggers);
 
     PairCont result = biggers;
 
-    Cont insertOrder = buildInsertionOrderFromJacob(smallers.size());
+    insertSmallersPairsInBiggers<C>(result, smallers);
 
-    ComparePairByBig cmp;
-    for(size_t i = 0; i < insertOrder.size(); i++)
-    {
-        int idx = insertOrder[i];
-        typename PairCont::iterator biggerIt = findByIdx(result, smallers[idx].idx);
-        typename PairCont::iterator limit = biggerIt + 1;
-        typename PairCont::iterator pos = lower_bound(result.begin(), limit, smallers[idx], cmp);
-        result.insert(pos, smallers[idx]);
-    }
+    if(hasStraggler)
+        result.push_back(straggler);
+
     pairs = result;
 }
 
-template <typename Cont, typename PairCont>
-void pmergeSort(Cont &c)
+template < template <class, class> class C >
+void pmergeSort(typename Cont<C>::intCont &c)
 {
+    typedef typename Cont<C>::pairCont PairCont;
+    typedef typename Cont<C>::intCont::iterator It;
+
     PairCont pairs;
     int straggler = 0;
     bool hasStraggler = false;
@@ -131,9 +172,9 @@ void pmergeSort(Cont &c)
         hasStraggler = true;
     }
 
-    for(typename Cont::iterator it = c.begin(); it != c.end();)
+    for(It it = c.begin(); it != c.end();)
     {
-        typename Cont::iterator next = it;
+        It next = it;
         ++next;
         if(next == c.end()) break;
 
@@ -147,10 +188,10 @@ void pmergeSort(Cont &c)
         ++it;
     }
     print_pairs("Before: ", pairs);
-    fordJhonsonSortPairsByBig(pairs);
+    fordJhonsonSortPairsByBig<C>(pairs);
     print_pairs("After: ", pairs);
 }
 
 // como gerir o time - unidade e funcao gettime
 
-//  corrigir compile errors e testar sorting dos biggers em pair
+// testar sorting dos biggers em pair

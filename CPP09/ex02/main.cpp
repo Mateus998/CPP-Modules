@@ -19,7 +19,7 @@ int main(int argc, char* argv[]) {
     dec.insert(dec.begin(), vec.begin(), vec.end());
     
     // print_numbers<std::vector<int>>("Before: ", vec);
-    pmergeSort< std::vector<int>, std::vector<t_pair> >(vec);
+    pmergeSort< std::vector >(vec);
     // pmergeSort<std::deque<int>, std::deque<t_pair>>(dec);
     // print_numbers<std::vector<int>>("After: ", vec);
     
