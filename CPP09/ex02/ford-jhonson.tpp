@@ -165,6 +165,8 @@ void pmergeSort(typename Cont<C>::intCont &c)
     PairCont pairs;
     int straggler = 0;
     bool hasStraggler = false;
+    (void)straggler;
+    (void)hasStraggler;
 
     if(c.size() % 2 != 0)
     {
