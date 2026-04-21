@@ -7,31 +7,33 @@ Cont buildJacobsthalUpTo(int max)
     J(1)=1
     J(n)=J(n-1) + 2*J(n-2)*/
 
-    Cont jacob = [0, 1];
+    Cont jacob;
+    jacob.push_back(0);
+    jacob.push_back(1);
     while(jacob.back() < max)
     {
-        jacob.push_back(jacob.back() + 2 * *(jacob.end() - 2))
+        jacob.push_back(jacob.back() + 2 * *(jacob.end() - 2));
     }
     return jacob;
 }
 
 template <typename Cont>
-Cont buildInsertionOrderFromJacob(int max)
+Cont buildInsertionOrderFromJacob(size_t max)
 {
     Cont order;
-    bool inserted[max] = 0;
-    Cont J = buildJacobsthalUpTo(max);
+    Cont inserted(max, false);
+    Cont J = buildJacobsthalUpTo<Cont>(max);
 
     for(size_t k = 2; k <= J.size() - 1; k++)
     {
-        int start = J[k - 1];
-        int end = min(J[k], max);
+        size_t start = J[k - 1];
+        size_t end = min(J[k], max);
 
         for(size_t i = end - 1; i >= start; i--)
         {
             if(i >= 0 && i < max && !inserted[i])
             {
-                order.push_back
+                order.push_back;
                 inserted[i] = true;
             }
         }
@@ -79,7 +81,8 @@ void fordJhonsonSortPairsByBig(PairCont &pairs)
         straggler = pairs.back();
     }
 
-    for(typename PairCont::iterator it = pairs.begin() size_t idx = 0; it != pairs.end();idx++)
+    size_t idx = 0;
+    for(typename PairCont::iterator it = pairs.begin(); it != pairs.end(); idx++)
     {
         typename PairCont::iterator next = it;
         ++next;
@@ -130,7 +133,7 @@ void pmergeSort(Cont &c)
 
     for(typename Cont::iterator it = c.begin(); it != c.end();)
     {
-        Cont::iterator next = it;
+        typename Cont::iterator next = it;
         ++next;
         if(next == c.end()) break;
 
