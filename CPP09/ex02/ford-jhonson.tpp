@@ -10,7 +10,7 @@ struct Cont
 };
 
 template < template <class, class> class C >
-typename Cont<C>::size_tCont buildJacobsthalUpTo(size_t max)
+typename Cont<C>::size_tCont buildJacobsthalUpTo(size_t max) //comecar por 1 e 1 porque o 0 sera sempre inserido diretamente, depois apagar um dos 1
 {
     /*J(0)=0
     J(1)=1
@@ -77,14 +77,29 @@ typename Cont<C>::pairCont::iterator findByIdx(typename Cont<C>::pairCont &resul
     return result.end();
 }
 
-struct ComparePairByBig //criar proprio binary search
+template < template <class, class> class C >
+typename Cont<C>::pairCont::iterator findPositionByBinarySearchByBig(
+    typename Cont<C>::pairCont &result,
+    t_pair &pendVal)
 {
-    bool operator()(t_pair const& a, t_pair const& b) const
+    typedef typename Cont<C>::pairCont::iterator It;
+
+    It biggerIt = findByIdx<C>(result, pendVal.idx);
+    It limit = biggerIt != result.end() ? biggerIt + 1 : biggerIt;
+
+    It left = result.begin();
+    It right = limit;
+
+    while(left != right)
     {
-        if (a.big != b.big) return a.big < b.big;
-        return a.small < b.small;
+        It mid = left + (right - left) / 2;
+        if (mid->big < pendVal.big)
+            left = mid + 1;
+        else
+            right = mid;
     }
-};
+    return left;
+}
 
 template < template <class, class> class C >
 void insertSmallersPairsInBiggers(typename Cont<C>::pairCont &result, typename Cont<C>::pairCont &toInsert)
@@ -94,15 +109,21 @@ void insertSmallersPairsInBiggers(typename Cont<C>::pairCont &result, typename C
 
     Size_tCont insertOrder = buildInsertionOrderFromJacob<C>(toInsert.size());
 
-    ComparePairByBig cmp;
     for(size_t i = 0; i < insertOrder.size(); i++)
     {
         int idx = insertOrder[i];
-        It biggerIt = findByIdx<C>(result, toInsert[idx].idx);
-        It limit = biggerIt + 1;
-        It pos = lower_bound(result.begin(), limit, toInsert[idx], cmp);
+        It pos = findPositionByBinarySearchByBig<C>(result, toInsert[idx]);
         result.insert(pos, toInsert[idx]);
     }
+}
+
+template < template <class, class> class C >
+void insertStragglerPair(typename Cont<C>::pairCont &result, t_pair &straggler)
+{
+    typedef typename Cont<C>::pairCont::iterator It;
+
+    It pos = findPositionByBinarySearchByBig<C>(result, straggler);
+    result.insert(pos, straggler);
 }
 
 template < template <class, class> class C >
@@ -151,7 +172,7 @@ void fordJhonsonSortPairsByBig(typename Cont<C>::pairCont &pairs)
     insertSmallersPairsInBiggers<C>(result, smallers);
 
     if(hasStraggler)
-        result.push_back(straggler);
+        insertStragglerPair<C>(result, straggler);
 
     pairs = result;
 }
@@ -159,8 +180,10 @@ void fordJhonsonSortPairsByBig(typename Cont<C>::pairCont &pairs)
 template < template <class, class> class C >
 void pmergeSort(typename Cont<C>::intCont &c)
 {
+    typedef typename Cont<C>::intCont IntCont;
     typedef typename Cont<C>::pairCont PairCont;
     typedef typename Cont<C>::intCont::iterator It;
+    typedef typename Cont<C>::pairCont::iterator ItP;
 
     PairCont pairs;
     int straggler = 0;
@@ -189,11 +212,21 @@ void pmergeSort(typename Cont<C>::intCont &c)
         it = next;
         ++it;
     }
+
     print_pairs("Before: ", pairs);
     fordJhonsonSortPairsByBig<C>(pairs);
     print_pairs("After: ", pairs);
+
+    IntCont chain;
+    IntCont pend;
+    for(ItP it = pairs.begin(); it != pairs.end(); it++)
+    {
+        chain.push_back(it->big);
+        pend.push_back(it->small);
+    }
+
 }
 
 // como gerir o time - unidade e funcao gettime
 
-// testar sorting dos biggers em pair
+// copiar file, arquivar e desenvolver nova forma atravez do exemplo .txt
