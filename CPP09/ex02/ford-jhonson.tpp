@@ -221,4 +221,4 @@ void pmergeSort(typename Cont<C>::intCont &c)
 }
 
 // recolher tempo passando como argumento
-// uma variavel que guarda o tempo no final do sorting
+// uma variavel que guarda o tempo no final do sort
