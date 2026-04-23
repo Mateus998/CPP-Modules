@@ -26,7 +26,7 @@ void parse(const char *value, std::vector<int>& vec);
 
 
 
-#include "ford-jhonson.tpp"
 #include "prints.tpp"
+#include "ford-jhonson.tpp"
 
 #endif
