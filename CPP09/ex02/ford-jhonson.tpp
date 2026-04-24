@@ -4,72 +4,34 @@ template < template <class, class> class C >
 struct Cont
 {
     typedef C<size_t, std::allocator<size_t> > size_tCont;
+    typedef C<bool, std::allocator<bool> > boolCont;
     typedef C<int,    std::allocator<int>    > intCont;
     typedef C<intCont,    std::allocator<intCont>    > pairCont;
 };
 
-// template < template <class, class> class C >
-// typename Cont<C>::pairCont::iterator findByIdx(typename Cont<C>::pairCont &result, const size_t idx)
-// {
-//     typedef typename Cont<C>::pairCont::iterator It;
-
-//     It it = result.begin();
-//     for(; it != result.end(); it++)
-//     {
-//         if(it->idx == idx)
-//             return it;
-//     }
-//     return result.end();
-// }
-
 template < template <class, class> class C >
 typename Cont<C>::pairCont::iterator findPositionByBinarySearch(
-    typename Cont<C>::pairCont &result,
-    t_pair &pendVal)
+    typename Cont<C>::pairCont &mainChain,
+    typename Cont<C>::pairCont::iterator &limit,
+    size_t order, 
+    int big)
 {
     typedef typename Cont<C>::pairCont::iterator It;
 
-    It biggerIt = findByIdx<C>(result, pendVal.idx);
-    It limit = biggerIt != result.end() ? biggerIt + 1 : biggerIt;
-
-    It left = result.begin();
+    It left = mainChain.begin();
     It right = limit;
 
     while(left != right)
     {
         It mid = left + (right - left) / 2;
-        if (mid->big < pendVal.big)
+        int mainBig = (*mid)[order - 1];
+        if (mainBig < big)
             left = mid + 1;
         else
             right = mid;
     }
     return left;
 }
-
-// template < template <class, class> class C >
-// void insertSmallersPairsInBiggers(typename Cont<C>::pairCont &result, typename Cont<C>::pairCont &toInsert)
-// {
-//     typedef typename Cont<C>::size_tCont Size_tCont;
-//     typedef typename Cont<C>::pairCont::iterator It;
-
-//     Size_tCont insertOrder = buildInsertionOrderFromJacob<C>(toInsert.size());
-
-//     for(size_t i = 0; i < insertOrder.size(); i++)
-//     {
-//         int idx = insertOrder[i];
-//         It pos = findPositionByBinarySearchByBig<C>(result, toInsert[idx]);
-//         result.insert(pos, toInsert[idx]);
-//     }
-// }
-
-// template < template <class, class> class C >
-// void insertStragglerPair(typename Cont<C>::pairCont &result, t_pair &straggler)
-// {
-//     typedef typename Cont<C>::pairCont::iterator It;
-
-//     It pos = findPositionByBinarySearchByBig<C>(result, straggler);
-//     result.insert(pos, straggler);
-// }
 
 template < template <class, class> class C >
 typename Cont<C>::size_tCont buildJacobsthalUpTo(size_t max)
@@ -103,10 +65,10 @@ typename Cont<C>::size_tCont buildInsertionOrderFromJacob(
     Size_tCont order;
     BoolCont inserted(max, false);
 
-    for(size_t k = 2; k <= J.size() - 1; k++)
+    for(size_t k = 2; k <= jacob.size() - 1; k++)
     {
-        size_t start = J[k - 1];
-        size_t end = std::min(static_cast<size_t>(J[k]), max);
+        size_t start = jacob[k - 1];
+        size_t end = std::min(static_cast<size_t>(jacob[k]), max);
 
         for (size_t i = end; i-- > start; )
         {
@@ -124,20 +86,6 @@ typename Cont<C>::size_tCont buildInsertionOrderFromJacob(
     
     return order;
 }
-// template < template <class, class> class C >
-// typename Cont<C>::intCont::iterator findApartnerOfpend(
-//     typename Cont<C>::pairCont mainChain,
-//     typename Cont<C>::intCont partner)
-//     {
-//         typedef typename Cont<C>::pairCont::iterator It;
-
-//         for(It it = mainChain.begin(); it != mainChain.end(); it++)
-//         {
-//             if(*it == partner)
-//                 return it;
-//         }
-//         return mainChain.end();
-//     }
 
 template < template <class, class> class C >
 void fordJhonsonSortByBig(
@@ -148,6 +96,7 @@ void fordJhonsonSortByBig(
     typedef typename Cont<C>::size_tCont IdxCont;
     typedef typename Cont<C>::pairCont PairCont;
     typedef typename IntCont::iterator It;
+    typedef typename PairCont::iterator PIt;
 
     size_t total_elem = container.size();
     size_t pair_size = order * 2;
@@ -213,7 +162,7 @@ void fordJhonsonSortByBig(
     }
 
     // B1 is allways smaller than A1
-    mainChain.insert(mainChain.begin(), pend.begin());
+    mainChain.insert(mainChain.begin(), pend.begin(), pend.begin() + 1);
     //pend.erase(pend.begin());
 
     // generate jacobsthal sequence
@@ -231,9 +180,18 @@ void fordJhonsonSortByBig(
         // group A of pend[i] is in mainOrigin
         // pend[i] is allways smaller than it's A partner
         // the search limit is the position of it's A partner
-        It limit = std::find(mainChain, mainStart[i]);
-        It pos = findPositionByBinarySearch();
+        PIt limit = std::find(mainChain.begin(), mainChain.end(), mainStart[i]);
+        PIt pos = findPositionByBinarySearch<C>(mainChain, limit, order, big);
+        mainChain.insert(pos, group);
     }
+
+    IntCont result;
+    for(PIt pt = mainChain.begin(); pt != mainChain.end(); pt++)
+    {
+        result.insert(result.end(), (*pt).begin(), (*pt).end());
+    }
+
+    container = result;
 }
 
 template < template <class, class> class C >
