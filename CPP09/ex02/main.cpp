@@ -2,7 +2,7 @@
 
 int main(int argc, char* argv[]) {
     std::vector<int> vec;
-    std::deque<int> dec;
+    std::deque<int> deq;
     
     if(argc < 3)
         return std::cerr << "Error" << std::endl, 1;
@@ -16,12 +16,25 @@ int main(int argc, char* argv[]) {
         return 1;
     }
 
-    dec.insert(dec.begin(), vec.begin(), vec.end());
+    deq.insert(deq.begin(), vec.begin(), vec.end());
     
-    // print_numbers<std::vector<int>>("Before: ", vec);
-    pmergeSort< std::vector >(vec);
-    // pmergeSort<std::deque<int>, std::deque<t_pair>>(dec);
-    // print_numbers<std::vector<int>>("After: ", vec);
+    long vecTime;
+    long deqTime;
+
+    print_numbers< std::vector<int> >("Before: ", vec);
+    pmergeSort< std::deque >(deq, &deqTime);
+    pmergeSort< std::vector >(vec, &vecTime);
+    print_numbers< std::vector<int> >("After: ", vec);
+    
+    checkSorting(vec, deq);
+
+    std::cout << "Time to process a range of "
+    << argc - 1 << " elements with std::vector : "
+    << vecTime << " us" << std::endl;
+
+    std::cout << "Time to process a range of "
+    << argc - 1 << " elements with std::deque : "
+    << deqTime << " us" << std::endl;
     
     return 0;
 }

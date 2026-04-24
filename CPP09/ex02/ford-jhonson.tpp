@@ -25,6 +25,7 @@ typename Cont<C>::pairCont::iterator findPositionByBinarySearch(
     {
         It mid = left + (right - left) / 2;
         int mainBig = (*mid)[order - 1];
+
         if (mainBig < big)
             left = mid + 1;
         else
@@ -55,14 +56,15 @@ typename Cont<C>::size_tCont buildJacobsthalUpTo(size_t max)
 }
 
 template < template <class, class> class C >
-typename Cont<C>::size_tCont buildInsertionOrderFromJacob(
-    typename Cont<C>::size_tCont jacob,
+typename Cont<C>::size_tCont buildInsertionOrderFromJacob( // .............make it simple...........
     size_t max)
-{ // simplificar para explicar
-    typedef typename Cont<C>::size_tCont Size_tCont;
+{
+    typedef typename Cont<C>::size_tCont IdxCont;
     typedef typename Cont<C>::boolCont BoolCont;
 
-    Size_tCont order;
+    // generate jacobsthal sequence
+    IdxCont jacob = buildJacobsthalUpTo<C>(max);
+    IdxCont order;
     BoolCont inserted(max, false);
 
     for(size_t k = 2; k <= jacob.size() - 1; k++)
@@ -88,28 +90,14 @@ typename Cont<C>::size_tCont buildInsertionOrderFromJacob(
 }
 
 template < template <class, class> class C >
-void fordJhonsonSortByBig(
+void orderPairsByBig(
     typename Cont<C>::intCont &container,
-    size_t order)
+    size_t group_count,
+    size_t order,
+    size_t pair_size)
 {
-    typedef typename Cont<C>::intCont IntCont;
-    typedef typename Cont<C>::size_tCont IdxCont;
-    typedef typename Cont<C>::pairCont PairCont;
-    typedef typename IntCont::iterator It;
-    typedef typename PairCont::iterator PIt;
+    typedef typename Cont<C>::intCont::iterator It;
 
-    size_t total_elem = container.size();
-    size_t pair_size = order * 2;
-    size_t group_count = total_elem / pair_size;
-
-    // end of the recursion. there are no more pairs of pairs
-    if (group_count < 1)
-        return;
-
-    // the leftover pair on odd number of groups pf pairs
-    bool hasStraggler = group_count * pair_size != total_elem;
-
-    // order each group of pairs by bigger value
     for (size_t i = 0; i < group_count; i++)
     {
         size_t idx_a = i * pair_size; //begin of group A (biggers) inside a pair
@@ -128,62 +116,117 @@ void fordJhonsonSortByBig(
             std::swap_ranges(firstA, lastA, firstB);
         }
     }
+}
 
+template < template <class, class> class C >
+void mainChainAndPendFill(
+    typename Cont<C>::intCont &container,
+    typename Cont<C>::pairCont &mainChain,
+    typename Cont<C>::pairCont &pend,
+    size_t group_count,
+    size_t order,
+    size_t pair_size)
+{
+    typedef typename Cont<C>::intCont IntCont;
+    typedef typename IntCont::iterator It;
+
+    for (size_t i = 0; i < group_count; i++)
+    {
+        size_t idx_a = i * pair_size; //begin of group A (biggers) inside a pair
+        size_t idx_b = i * pair_size + order; //begin of group B (smallers) inside the same pair
+
+        It firstA = container.begin() + idx_a;
+        It firstB = container.begin() + idx_b;
+        
+        mainChain.push_back(IntCont(firstA, firstA + order));
+        pend.push_back(IntCont(firstB, firstB + order));
+    }
+}
+
+template < template <class, class> class C >
+void insertPendInMainByInsertionOrder(
+    typename Cont<C>::pairCont &mainChain,
+    typename Cont<C>::pairCont &mainStart,
+    typename Cont<C>::pairCont &pend,
+    typename Cont<C>::size_tCont &insertOrder,
+    size_t order)
+{
+    typedef typename Cont<C>::intCont IntCont;
+    typedef typename Cont<C>::pairCont::iterator PIt;
+
+    for (size_t i = 0; i < insertOrder.size(); i++)
+    {
+        size_t idx = insertOrder[i];
+        IntCont group = pend[idx];
+        int big = group[order - 1]; // biggest element of group
+
+        // pend[idx] is the original B(idx+2) because B1 was already removed;
+        // its A partner is mainStart[idx+1].
+        // the straggler (last pend element) has no A partner: search the full chain.
+        PIt limit;
+        if (idx + 1 < mainStart.size())
+            limit = std::find(mainChain.begin(), mainChain.end(), mainStart[idx + 1]);
+        else
+            limit = mainChain.end();
+        PIt pos = findPositionByBinarySearch<C>(mainChain, limit, order, big);
+        mainChain.insert(pos, group);
+    }
+}
+
+template < template <class, class> class C >
+void fordJhonsonSortByBig(
+    typename Cont<C>::intCont &container,
+    size_t order)
+{
+    typedef typename Cont<C>::size_tCont IdxCont;
+    typedef typename Cont<C>::intCont IntCont;
+    typedef typename Cont<C>::pairCont PairCont;
+    typedef typename PairCont::iterator PIt;
+
+    size_t total_elem = container.size();
+    size_t pair_size = order * 2;
+    size_t group_count = total_elem / pair_size;
+
+    // end of the recursion. there are no more pairs of pairs
+    if (group_count < 1)
+        return;
+
+    // the leftover pair on odd number of groups pf pairs
+    size_t remaining = total_elem - group_count * pair_size;
+    bool hasStraggler = remaining >= order;
+
+    // order each group of pairs by bigger value
+    orderPairsByBig<C>(container, group_count, order, pair_size);
+
+    IntCont straggler;
+    if (hasStraggler)
+    {
+        size_t idx = group_count * pair_size;
+        straggler = IntCont(container.begin() + idx, container.begin() + idx + order);
+    }
     // go to next level of pairs
     fordJhonsonSortByBig<C>(container, order * 2);
 
     // creation of mainChain and pend
     PairCont mainChain; // container of groups A of pairs
     PairCont pend; // container of groups B of pairs
+    mainChainAndPendFill<C>(container, mainChain, pend, group_count, order, pair_size);
 
-    for (size_t i = 0; i < group_count; i++)
-    {
-        size_t idx_a = i * pair_size; //begin of group A (biggers) inside a pair
-        size_t idx_b = idx_a + order; //begin of group B (smallers) inside the same pair
-
-        It firstA = container.begin() + idx_a;
-        It lastA = firstA + order;
-        It firstB = container.begin() + idx_b;
-        It lastB = firstB + order;
-
-        mainChain.push_back(IntCont(firstA, lastA));
-        pend.push_back(IntCont(firstB, lastB));
-    }
-
+    //copy of starting main
     PairCont mainStart(mainChain);
 
     if(hasStraggler)
-    {
-        size_t idx_straggler = group_count * pair_size;
-        It first_straggler = container.begin() + idx_straggler;
-        It last_straggler = first_straggler + order;
-
-        pend.push_back(IntCont(first_straggler, last_straggler));
-    }
+        pend.push_back(straggler);
 
     // B1 is allways smaller than A1
-    mainChain.insert(mainChain.begin(), pend.begin(), pend.begin() + 1);
-    //pend.erase(pend.begin());
-
-    // generate jacobsthal sequence
-    IdxCont jacobsthalOrder = buildJacobsthalUpTo<C>(pend.size());
+    mainChain.insert(mainChain.begin(), pend.front());
+    pend.erase(pend.begin());
 
     // generate insertion order based on jacobsthal sequence
-    IdxCont insertOrder = buildInsertionOrderFromJacob<C>(jacobsthalOrder, pend.size());
+    IdxCont insertOrder = buildInsertionOrderFromJacob<C>(pend.size());
 
-    // insert each group of pend in mainChain
-    for (size_t i = 0; i < insertOrder.size(); i++)
-    {
-        IntCont group = pend[i];
-        int big = group[order - 1]; // biggest element of group
-
-        // group A of pend[i] is in mainOrigin
-        // pend[i] is allways smaller than it's A partner
-        // the search limit is the position of it's A partner
-        PIt limit = std::find(mainChain.begin(), mainChain.end(), mainStart[i]);
-        PIt pos = findPositionByBinarySearch<C>(mainChain, limit, order, big);
-        mainChain.insert(pos, group);
-    }
+    // insert each group of pend in mainChain by insertion order
+    insertPendInMainByInsertionOrder<C>(mainChain, mainStart, pend, insertOrder, order);
 
     IntCont result;
     for(PIt pt = mainChain.begin(); pt != mainChain.end(); pt++)
@@ -195,13 +238,14 @@ void fordJhonsonSortByBig(
 }
 
 template < template <class, class> class C >
-void pmergeSort(typename Cont<C>::intCont &c)
+void pmergeSort(typename Cont<C>::intCont &c, long *microseconds)
 {
-    
-    print_numbers("Before: ", c);
-    fordJhonsonSortByBig<C>(c, 1);
-    print_numbers("After : ", c);
-}
+    struct timeval start, end;
 
-// recolher tempo passando como argumento
-// uma variavel que guarda o tempo no final do sort
+    gettimeofday(&start, NULL);
+    fordJhonsonSortByBig<C>(c, 1);
+    gettimeofday(&end, NULL);
+
+    *microseconds = (end.tv_sec - start.tv_sec) * 1000000L
+                    + (end.tv_usec - start.tv_usec);
+}

@@ -9,6 +9,7 @@
 #include <cerrno>
 #include <memory>
 #include <cstddef>
+#include <sys/time.h>
 
 typedef struct s_pair
 {
@@ -17,14 +18,9 @@ typedef struct s_pair
     size_t idx;
 }   t_pair;
 
-// typedef struct s_time
-// {
-
-// } t_time;
-
 void parse(const char *value, std::vector<int>& vec);
 
-
+void checkSorting(std::vector<int> &vec, std::deque<int> &deq);
 
 #include "prints.tpp"
 #include "ford-jhonson.tpp"
