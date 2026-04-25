@@ -1,4 +1,4 @@
-#include "pmergeme.hpp"
+#include "PmergeMe.hpp"
 
 int main(int argc, char* argv[]) {
     std::vector<int> vec;
@@ -19,22 +19,22 @@ int main(int argc, char* argv[]) {
     deq.insert(deq.begin(), vec.begin(), vec.end());
     
     long vecTime;
-    // long deqTime;
+    long deqTime;
 
-    // print_numbers< std::vector<int> >("Before: ", vec);
+    print_numbers< std::vector<int> >("Before: ", vec);
     pmergeSort< std::vector >(vec, &vecTime);
-    // pmergeSort< std::deque >(deq, &deqTime);
-    // print_numbers< std::vector<int> >("After : ", vec);
+    pmergeSort< std::deque >(deq, &deqTime);
+    print_numbers< std::vector<int> >("After : ", vec);
 
     checkSorting<std::vector<int> >(vec);
 
-    // std::cout << "Time to process a range of "
-    // << argc - 1 << " elements with std::vector : "
-    // << vecTime << " us" << std::endl;
+    std::cout << "Time to process a range of "
+    << argc - 1 << " elements with std::vector : "
+    << vecTime << " us" << std::endl;
 
-    // std::cout << "Time to process a range of "
-    // << argc - 1 << " elements with std::deque : "
-    // << deqTime << " us" << std::endl;
+    std::cout << "Time to process a range of "
+    << argc - 1 << " elements with std::deque : "
+    << deqTime << " us" << std::endl;
     
     return 0;
 }

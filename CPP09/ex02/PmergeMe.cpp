@@ -1,4 +1,4 @@
-#include "pmergeme.hpp"
+#include "PmergeMe.hpp"
 
 static int convertToInt(const char *value)
 {
