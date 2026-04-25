@@ -20,8 +20,6 @@ typedef struct s_pair
 
 void parse(const char *value, std::vector<int>& vec);
 
-void checkSorting(std::vector<int> &vec, std::deque<int> &deq);
-
 #include "prints.tpp"
 #include "ford-jhonson.tpp"
 

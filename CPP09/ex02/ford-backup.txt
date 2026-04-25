@@ -1,24 +1,38 @@
-#include "pmergeme.hpp"
-
 template < template <class, class> class C >
-struct Cont
+typename Cont<C>::pairCont::iterator findPositionByBinarySearch(
+    typename Cont<C>::pairCont &mainChain,
+    typename Cont<C>::pairCont::iterator &limit,
+    size_t order, 
+    int big)
 {
-    typedef C<size_t, std::allocator<size_t> > size_tCont;
-    typedef C<int,    std::allocator<int>    > intCont;
-    typedef C<bool,   std::allocator<bool>   > boolCont;
-    typedef C<t_pair, std::allocator<t_pair> > pairCont;
-};
+    typedef typename Cont<C>::pairCont::iterator It;
+
+    It left = mainChain.begin();
+    It right = limit;
+
+    while(left != right)
+    {
+        It mid = left + (right - left) / 2;
+        int mainBig = (*mid)[order - 1];
+
+        if (mainBig < big)
+            left = mid + 1;
+        else
+            right = mid;
+    }
+    return left;
+}
 
 template < template <class, class> class C >
-typename Cont<C>::size_tCont buildJacobsthalUpTo(size_t max) //comecar por 1 e 1 porque o 0 sera sempre inserido diretamente, depois apagar um dos 1
+typename Cont<C>::size_tCont buildJacobsthalUpTo(size_t max)
 {
     /*J(0)=0
     J(1)=1
     J(n)=J(n-1) + 2*J(n-2)*/
 
-    typedef typename Cont<C>::size_tCont Size_tCont;
+    typedef typename Cont<C>::size_tCont IdxCont;
 
-    Size_tCont jacob;
+    IdxCont jacob;
     jacob.push_back(0);
     jacob.push_back(1);
     while(jacob.back() < max)
@@ -26,23 +40,26 @@ typename Cont<C>::size_tCont buildJacobsthalUpTo(size_t max) //comecar por 1 e 1
         size_t n = jacob.size();
         jacob.push_back(jacob[n - 1] + 2 * jacob[n - 2]);
     }
+
     return jacob;
 }
 
 template < template <class, class> class C >
-typename Cont<C>::size_tCont buildInsertionOrderFromJacob(size_t max)
+typename Cont<C>::size_tCont buildInsertionOrderFromJacob( // .............make it simple...........
+    size_t max)
 {
-    typedef typename Cont<C>::size_tCont Size_tCont;
+    typedef typename Cont<C>::size_tCont IdxCont;
     typedef typename Cont<C>::boolCont BoolCont;
 
-    Size_tCont order;
+    // generate jacobsthal sequence
+    IdxCont jacob = buildJacobsthalUpTo<C>(max);
+    IdxCont order;
     BoolCont inserted(max, false);
-    Size_tCont J = buildJacobsthalUpTo<C>(max);
 
-    for(size_t k = 2; k <= J.size() - 1; k++)
+    for(size_t k = 2; k <= jacob.size() - 1; k++)
     {
-        size_t start = J[k - 1];
-        size_t end = std::min(static_cast<size_t>(J[k]), max);
+        size_t start = jacob[k - 1];
+        size_t end = std::min(static_cast<size_t>(jacob[k]), max);
 
         for (size_t i = end; i-- > start; )
         {
@@ -52,8 +69,6 @@ typename Cont<C>::size_tCont buildInsertionOrderFromJacob(size_t max)
                 inserted[i] = true;
             }
         }
-
-
     }
 
     for(size_t i = 0; i < max; i++)
@@ -64,169 +79,146 @@ typename Cont<C>::size_tCont buildInsertionOrderFromJacob(size_t max)
 }
 
 template < template <class, class> class C >
-typename Cont<C>::pairCont::iterator findByIdx(typename Cont<C>::pairCont &result, const size_t idx)
+void orderPairsByBig(
+    typename Cont<C>::intCont &container,
+    size_t group_count,
+    size_t order,
+    size_t pair_size)
 {
-    typedef typename Cont<C>::pairCont::iterator It;
+    typedef typename Cont<C>::intCont::iterator It;
 
-    It it = result.begin();
-    for(; it != result.end(); it++)
+    for (size_t i = 0; i < group_count; i++)
     {
-        if(it->idx == idx)
-            return it;
-    }
-    return result.end();
-}
+        size_t idx_a = i * pair_size; //begin of group A (biggers) inside a pair
+        size_t idx_b = idx_a + order; //begin of group B (smallers) inside the same pair
 
-template < template <class, class> class C >
-typename Cont<C>::pairCont::iterator findPositionByBinarySearchByBig(
-    typename Cont<C>::pairCont &result,
-    t_pair &pendVal)
-{
-    typedef typename Cont<C>::pairCont::iterator It;
-
-    It biggerIt = findByIdx<C>(result, pendVal.idx);
-    It limit = biggerIt != result.end() ? biggerIt + 1 : biggerIt;
-
-    It left = result.begin();
-    It right = limit;
-
-    while(left != right)
-    {
-        It mid = left + (right - left) / 2;
-        if (mid->big < pendVal.big)
-            left = mid + 1;
-        else
-            right = mid;
-    }
-    return left;
-}
-
-template < template <class, class> class C >
-void insertSmallersPairsInBiggers(typename Cont<C>::pairCont &result, typename Cont<C>::pairCont &toInsert)
-{
-    typedef typename Cont<C>::size_tCont Size_tCont;
-    typedef typename Cont<C>::pairCont::iterator It;
-
-    Size_tCont insertOrder = buildInsertionOrderFromJacob<C>(toInsert.size());
-
-    for(size_t i = 0; i < insertOrder.size(); i++)
-    {
-        int idx = insertOrder[i];
-        It pos = findPositionByBinarySearchByBig<C>(result, toInsert[idx]);
-        result.insert(pos, toInsert[idx]);
+        int val_a = container[idx_a + order - 1]; //first value of group A
+        int val_b = container[idx_b + order - 1]; //first value of group B
+        
+        if (val_b > val_a)
+        {
+            // order is the size of groups A and B. Half of pair size
+            It firstA = container.begin() + idx_a;
+            It firstB = container.begin() + idx_b;
+            It lastA = firstB;
+            // swap values of group A and B of a pair
+            std::swap_ranges(firstA, lastA, firstB);
+        }
     }
 }
 
 template < template <class, class> class C >
-void insertStragglerPair(typename Cont<C>::pairCont &result, t_pair &straggler)
-{
-    typedef typename Cont<C>::pairCont::iterator It;
-
-    It pos = findPositionByBinarySearchByBig<C>(result, straggler);
-    result.insert(pos, straggler);
-}
-
-template < template <class, class> class C >
-void fordJhonsonSortPairsByBig(typename Cont<C>::pairCont &pairs)
-{
-    typedef typename Cont<C>::pairCont PairCont;
-    typedef typename PairCont::iterator It;
-
-    if (pairs.size() <= 1)
-        return;
-
-    PairCont biggers;
-    PairCont smallers;
-    bool hasStraggler = false;
-    t_pair straggler;
-
-    if(pairs.size() % 2 != 0)
-    {
-        hasStraggler = true;
-        straggler = pairs.back();
-    }
-
-    size_t idx = 0;
-    for(It it = pairs.begin(); it != pairs.end(); idx++)
-    {
-        It next = it;
-        ++next;
-        if(next == pairs.end()) break;
-
-        t_pair big = (*it).big > (*next).big ? *it : *next;
-        t_pair small = (*it).big <= (*next).big ? *it : *next;
-        big.idx = idx;
-        small.idx = idx;
-
-        biggers.push_back(big);
-        smallers.push_back(small);
-
-        it = next;
-        ++it;
-    }
-
-    fordJhonsonSortPairsByBig<C>(biggers);
-
-    PairCont result = biggers;
-
-    insertSmallersPairsInBiggers<C>(result, smallers);
-
-    if(hasStraggler)
-        insertStragglerPair<C>(result, straggler);
-
-    pairs = result;
-}
-
-template < template <class, class> class C >
-void pmergeSort(typename Cont<C>::intCont &c)
+void mainChainAndPendFill(
+    typename Cont<C>::intCont &container,
+    typename Cont<C>::pairCont &mainChain,
+    typename Cont<C>::pairCont &pend,
+    size_t group_count,
+    size_t order,
+    size_t pair_size)
 {
     typedef typename Cont<C>::intCont IntCont;
-    typedef typename Cont<C>::pairCont PairCont;
-    typedef typename Cont<C>::intCont::iterator It;
-    typedef typename Cont<C>::pairCont::iterator ItP;
+    typedef typename IntCont::iterator It;
 
-    PairCont pairs;
-    int straggler = 0;
-    bool hasStraggler = false;
-    (void)straggler;
-    (void)hasStraggler;
-
-    if(c.size() % 2 != 0)
+    for (size_t i = 0; i < group_count; i++)
     {
-        straggler = c.back();
-        hasStraggler = true;
+        size_t idx_a = i * pair_size; //begin of group A (biggers) inside a pair
+        size_t idx_b = i * pair_size + order; //begin of group B (smallers) inside the same pair
+
+        It firstA = container.begin() + idx_a;
+        It firstB = container.begin() + idx_b;
+        
+        mainChain.push_back(IntCont(firstA, firstA + order));
+        pend.push_back(IntCont(firstB, firstB + order));
     }
-
-    for(It it = c.begin(); it != c.end();)
-    {
-        It next = it;
-        ++next;
-        if(next == c.end()) break;
-
-        t_pair p;
-        p.big = *it > *next ? *it : *next;
-        p.small = *it <= *next ? *it : *next;
-        p.idx = 0;
-        pairs.push_back(p);
-
-        it = next;
-        ++it;
-    }
-
-    print_pairs("Before: ", pairs);
-    fordJhonsonSortPairsByBig<C>(pairs);
-    print_pairs("After: ", pairs);
-
-    IntCont chain;
-    IntCont pend;
-    for(ItP it = pairs.begin(); it != pairs.end(); it++)
-    {
-        chain.push_back(it->big);
-        pend.push_back(it->small);
-    }
-
 }
 
-// como gerir o time - unidade e funcao gettime
+template < template <class, class> class C >
+void insertPendInMainByInsertionOrder(
+    typename Cont<C>::pairCont &mainChain,
+    typename Cont<C>::pairCont &mainStart,
+    typename Cont<C>::pairCont &pend,
+    typename Cont<C>::size_tCont &insertOrder,
+    size_t order)
+{
+    typedef typename Cont<C>::intCont IntCont;
+    typedef typename Cont<C>::pairCont::iterator PIt;
 
-// copiar file, arquivar e desenvolver nova forma atravez do exemplo .txt
+    for (size_t i = 0; i < insertOrder.size(); i++)
+    {
+        size_t idx = insertOrder[i];
+        IntCont group = pend[idx];
+        int big = group[order - 1]; // biggest element of group
+
+        // pend[idx] is the original B(idx+2) because B1 was already removed;
+        // its A partner is mainStart[idx+1].
+        // the straggler (last pend element) has no A partner: search the full chain.
+        PIt limit;
+        if (idx + 1 < mainStart.size())
+            limit = std::find(mainChain.begin(), mainChain.end(), mainStart[idx + 1]);
+        else
+            limit = mainChain.end();
+        PIt pos = findPositionByBinarySearch<C>(mainChain, limit, order, big);
+        mainChain.insert(pos, group);
+    }
+}
+
+
+// template < template <class, class> class C >
+// typename Cont<C>::intCont::iterator findLimitByValue(
+//     typename Cont<C>::intCont &chain,
+//     int value)
+// {
+//     typedef typename Cont<C>::intCont::iterator It;
+
+//     It it = chain.begin();
+//     for(; it != chain.end(); it++)
+//     {
+//         if(*it == value)
+//             return it;
+//     }
+//     return chain.end();
+// }
+
+// template < template <class, class> class C >
+// typename Cont<C>::intCont::iterator findPositionByIdx(
+//     typename Cont<C>::intCont &chain,
+//     int biggersValue,
+//     int value)
+// {
+//     typedef typename Cont<C>::intCont::iterator It;
+
+//     It limitIt = findLimitByValue<C>(chain, biggersValue);
+//     It limit = limitIt != chain.end() ? limitIt + 1 : limitIt;
+    
+//     It left = chain.begin();
+//     It right = limit;
+
+//     while(left != right)
+//     {
+//         It mid = left + (right - left) / 2;
+//         if (*mid < value)
+//             left = mid + 1;
+//         else
+//             right = mid;
+//     }
+//     return left;
+// }
+
+// template < template <class, class> class C >
+// void insertSmallersByBinarySearch(
+//     typename Cont<C>::intCont &chain,
+//     typename Cont<C>::intCont &biggers,
+//     typename Cont<C>::intCont &smallers)
+// {
+//     typedef typename Cont<C>::size_tCont Size_tCont;
+//     typedef typename Cont<C>::intCont::iterator It;
+
+//     Size_tCont insertOrder = buildInsertionOrderFromJacob<C>(smallers.size());
+
+//     for(size_t i = 0; i < insertOrder.size(); i++)
+//     {
+//         size_t idx = insertOrder[i];
+//         It pos = idx == 0 ? chain.begin() : findPositionByIdx<C>(chain, biggers[idx], smallers[idx]);
+//         chain.insert(pos, smallers[idx]);
+//     }
+// }
