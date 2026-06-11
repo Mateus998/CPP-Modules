@@ -6,7 +6,7 @@
 /*   By: mateferr <mateferr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/06 15:56:21 by mateferr          #+#    #+#             */
-/*   Updated: 2026/02/06 19:22:11 by mateferr         ###   ########.fr       */
+/*   Updated: 2026/06/11 14:10:00 by mateferr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,10 +37,6 @@ void BitcoinExchange::loadDatabaseFile(void){
         float value = std::atof(valueStr.c_str());
         _btcDatabase[dateStr] = value;
     }
-    // std::map<std::string, float>::iterator it = _btcDatabase.begin();
-    // std::cout << "Date: " << it->first << " price: " << it->second << std::endl;
-    // it++;
-    // std::cout << "Date: " << it->first << " price: " << it->second << std::endl;
 };
 
 bool BitcoinExchange::validDate(const std::string& date){
@@ -73,7 +69,7 @@ bool BitcoinExchange::validValue(const std::string& value){
     if (num < 0)
         return std::cout << "Error: negative value => " << value << std::endl, false;
     
-    if (num > 2.147483647e+09) {
+    if (num > 1000) {
         return std::cout << "Error: value too big => " << value << std::endl, false;
     }
     return true;
@@ -96,6 +92,9 @@ void BitcoinExchange::bitcoinExchange(const std::string& inputFileName){
     std::string line;
     std::string dateStr;
     std::string valueStr;
+    std::getline(inputFile, line);
+    if(line != "date | value")
+        throw std::runtime_error("Invalid header of input file");
     while(std::getline(inputFile, line)){
         std::stringstream ss(line);
         std::getline(ss, dateStr, ' ');

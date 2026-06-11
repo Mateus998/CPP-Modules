@@ -171,8 +171,11 @@ void insertSmallersPairsInBiggers(
     {
         size_t idx = insertOrder[i];
         t_pair &elem = pending[idx];
+        // find the elemnts pair
         It bound = findByIdx<C>(result, elem.idx);
+        // define the limit range of search
         It limit = (bound != result.end()) ? bound + 1 : result.end();
+        // find position of pending element in result list
         It pos = findPositionByBinarySearch<C>(result, limit, elem.big);
         result.insert(pos, elem);
     }
@@ -206,6 +209,7 @@ void restoreIdxValueToOrigin(
 {
     typedef typename Cont<C>::boolCont BoolCont;
 
+    // get the correct index based on previous state
     BoolCont matched(origBigs.size(), false);
     for (size_t p = 0; p < biggers.size(); p++)
     {
@@ -234,6 +238,7 @@ void recursionSortPairsByBig(typename Cont<C>::pairCont &pairs)
     bool hasStraggler = (pairs.size() % 2 != 0);
     t_pair straggler = pairs.back();
 
+    // fill other 2 containers with the biggest and smallest t_pairs
     separateBiggersFromSmallers<C>(pairs, biggers, smallers);
 
     // Save big values before the recursive call corrupts idx
@@ -241,10 +246,12 @@ void recursionSortPairsByBig(typename Cont<C>::pairCont &pairs)
     for (size_t i = 0; i < biggers.size(); i++)
         origBigs.push_back(biggers[i].big);
 
+    // repeat the process until 1 pair remains
     recursionSortPairsByBig<C>(biggers);
 
     restoreIdxValueToOrigin<C>(origBigs, biggers);
 
+    // add last element of odd list to the end of pending list
     if(hasStraggler)
     {
         straggler.idx = biggers.size();
@@ -261,6 +268,7 @@ void fillPairContainer(
     typename Cont<C>::intCont &c,
     typename Cont<C>::pairCont &pairs)
 {
+    // fill t_pair comparing each 2 elements of the list
     for (size_t i = 0; i + 1 < c.size(); i += 2)
     {
         int    a = c[i], b = c[i + 1];
@@ -280,6 +288,7 @@ void fordJhonsonSortByBig(
     typedef typename Cont<C>::pairCont::iterator It;
 
     PairCont pairs;
+    // if the number of elements is odd
     bool hasStraggler = (container.size() % 2 != 0);
     int  straggler    = container.back();
 
@@ -291,6 +300,7 @@ void fordJhonsonSortByBig(
     for(size_t i = 0; i < pairs.size(); i++)
         pairs[i].idx = i;
 
+    // Do one last process of the recursion to get int and not pairs
     PairCont biggers(pairs), smallers(pairs);
     for(size_t i = 0; i < pairs.size(); i++)
     {
